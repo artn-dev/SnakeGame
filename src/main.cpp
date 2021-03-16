@@ -1,52 +1,50 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Window.h"
+#include "Shaders.h"
 
 int main()
 {
-        GLFWwindow *window = nullptr;
-        const int SCREEN_WIDTH  = 300;
-        const int SCREEN_HEIGHT = 300;
+        WindowConfig wnd_config;
+        wnd_config.height    = 300;
+        wnd_config.width     = 300;
+        wnd_config.resizable = false;
+        wnd_config.version   = {4, 5};
 
-        if (!glfwInit()) {
-                std::cout << "Couldn't initialize glfw\n";
+        Window window("Snake Game", wnd_config);
+
+        if (!window.init())
                 return -1;
-        }
 
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        unsigned int shader = glCreateProgram();
+        unsigned int vert = load_shader(GL_VERTEX_SHADER,   "../res/test.vert");
+        unsigned int frag = load_shader(GL_FRAGMENT_SHADER, "../res/test.frag");
+        shader = link_program(shader, vert, frag);
 
-        window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Snake Game", NULL, NULL);
-        if (window == NULL) {
-                std::cout << "Failed to create window\n";
-                glfwTerminate();
-                return -1;
-        }
+        unsigned int vao;
 
-        glfwMakeContextCurrent(window);
-
-        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-                std::cout << "Failed to load glad\n";
-                glfwDestroyWindow(window);
-                glfwTerminate();
-                return -1;
-        }
-
-        std::cout << "OpenGL v" << glGetString(GL_VERSION) << "\n";
+        glGenVertexArrays(1, &vao);
 
         const float red[4] = { 255.0f, 0.0f, 0.0f, 255.0f };
 
-        while (!glfwWindowShouldClose(window)) {
+        while (window.is_running()) {
                 glfwPollEvents();
 
                 glClearBufferfv(GL_COLOR, 0, red);
 
-                glfwSwapBuffers(window);
+                glUseProgram(shader);
+                glBindVertexArray(vao);
+                glDrawArrays(GL_TRIANGLES, 0, 3);
+
+                glfwSwapBuffers(window.data());
         }
 
-        glfwDestroyWindow(window);
-        glfwTerminate();
+        glDeleteVertexArrays(1, &vao);
+
+        glDeleteShader(vert);
+        glDeleteShader(frag);
+        glDeleteProgram(shader);
+
         return 0;
 }
