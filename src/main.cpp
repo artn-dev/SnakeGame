@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include "Window.h"
 #include "Shaders.h"
+#include "QuadRenderer.h"
+
 
 int main()
 {
@@ -30,28 +32,39 @@ int main()
         glUniform1i(shader.get_uniform("grid_cols"), 10);
         glUniform1f(shader.get_uniform("grid_cellsize"), 30.0f);
 
+        QuadRenderer renderer(&shader);
 
-        unsigned int vao;
-        unsigned int vbo;
-        float data[] = { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 5.0f };
 
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
+        Quad test_data = {
+                { 2.0f, 2.0f },
+                { 0.0f, 0.0f, 1.0f, 0.0f },
+                5.0f
+        };
 
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
+        Quad test_data1 = {
+                { 1.0f, 4.0f },
+                { 0.0f, 1.0f, 0.0f, 1.0f },
+                5.0f
+        };
 
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(0));
+        Quad test_data2 = {
+                { 1.0f, 0.0f },
+                { 0.0f, 0.0f, 1.0f, 1.0f },
+                3.0f
+        };
 
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(2 * sizeof(float)));
+        Quad grid[10][10];
+        kuso::vec4 colors[2] = {
+                { 0.0f, 0.0f, 0.0f, 1.0f },
+                { 0.2f, 0.0f, 0.3f, 1.0f }
+        };
 
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(6 * sizeof(float)));
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+        for (int i = 0; i < 10; i++)
+                for(int j = 0; j < 10; j++) {
+                        grid[i][j].position = { static_cast<float>(i), static_cast<float>(j) };
+                        grid[i][j].color = colors[(i + j) % 2];
+                        grid[i][j].padding = 0.0f;
+                }
 
         const float red[4] = { 255.0f, 0.0f, 0.0f, 255.0f };
 
@@ -60,15 +73,16 @@ int main()
 
                 glClearBufferfv(GL_COLOR, 0, red);
 
-                glUseProgram(shader.id());
-                glBindVertexArray(vao);
-                glDrawArrays(GL_POINTS, 0, 1);
+                for (int j = 0; j < 10; j++)
+                        renderer.batch(grid[j], 10);
+                renderer.batch(test_data);
+                renderer.batch(test_data2);
+                renderer.batch(test_data1);
+
+                renderer.render();
 
                 glfwSwapBuffers(window.data());
         }
-
-        glDeleteBuffers(1, &vbo);
-        glDeleteVertexArrays(1, &vao);
 
         glDeleteShader(vert);
         glDeleteShader(frag);

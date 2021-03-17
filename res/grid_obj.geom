@@ -18,7 +18,7 @@ uniform int grid_cols;
 uniform float grid_cellsize;
 
 mat4 get_projection(float width, float height);
-void build_quad(vec3 topleft, float pad, mat4 proj);
+void build_quad(vec3 grid_pos, float pad, mat4 proj);
 
 void main()
 {
@@ -27,7 +27,10 @@ void main()
 
         mat4 proj = get_projection(total_width, total_height);
 
-        gs_out.color = gs_in[0].color;
+        if (1 != 0)
+                gs_out.color = gs_in[0].color;
+        else
+                gs_out.color = vec4(0.2,0,0.3,1);
 
         build_quad(gl_in[0].gl_Position.xyz, gs_in[0].padding, proj);
 }
@@ -50,7 +53,7 @@ mat4 get_projection(float width, float height)
         return proj;
 }
 
-void build_quad(vec3 topleft, float pad, mat4 proj)
+void build_quad(vec3 grid_pos, float pad, mat4 proj)
 {
         vec3 vertex_offsets[] = {
                 vec3(0, 0, 0),  // top-left
@@ -60,11 +63,11 @@ void build_quad(vec3 topleft, float pad, mat4 proj)
         };
 
         vec3 pad_offset = pad * vec3(1, 1, 0);
-
-        float size = grid_cellsize - 2 * pad;
+        vec3 topleft    = grid_cellsize * grid_pos;
+        float size      = grid_cellsize - 2 * pad;
 
         for (int i = 0; i < 4; i++) {
-                vec3 position = size * (topleft + vertex_offsets[i]) + pad_offset;
+                vec3 position = topleft + size * vertex_offsets[i] + pad_offset;
                 gl_Position   = proj * vec4(position, 1);
                 EmitVertex();
         }
