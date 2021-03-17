@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Shaders.h"
 #include "QuadRenderer.h"
+#include "Grid.h"
 
 
 int main()
@@ -19,6 +20,8 @@ int main()
         if (!window.init())
                 return -1;
 
+        Grid grid(10, 10, 30.0f);
+
         unsigned int vert = load_shader(GL_VERTEX_SHADER,   "../res/grid_obj.vert");
         unsigned int frag = load_shader(GL_FRAGMENT_SHADER, "../res/grid_obj.frag");
         unsigned int geom = load_shader(GL_GEOMETRY_SHADER, "../res/grid_obj.geom");
@@ -28,9 +31,9 @@ int main()
 
         glUseProgram(shader.id());
 
-        glUniform1i(shader.get_uniform("grid_rows"), 10);
-        glUniform1i(shader.get_uniform("grid_cols"), 10);
-        glUniform1f(shader.get_uniform("grid_cellsize"), 30.0f);
+        glUniform1i(shader.get_uniform("grid_rows"), grid.rows());
+        glUniform1i(shader.get_uniform("grid_cols"), grid.cols());
+        glUniform1f(shader.get_uniform("grid_cellsize"), grid.cellsize());
 
         QuadRenderer renderer(&shader);
 
@@ -53,18 +56,6 @@ int main()
                 3.0f
         };
 
-        Quad grid[10][10];
-        kuso::vec4 colors[2] = {
-                { 0.0f, 0.0f, 0.0f, 1.0f },
-                { 0.2f, 0.0f, 0.3f, 1.0f }
-        };
-
-        for (int i = 0; i < 10; i++)
-                for(int j = 0; j < 10; j++) {
-                        grid[i][j].position = { static_cast<float>(i), static_cast<float>(j) };
-                        grid[i][j].color = colors[(i + j) % 2];
-                        grid[i][j].padding = 0.0f;
-                }
 
         const float red[4] = { 255.0f, 0.0f, 0.0f, 255.0f };
 
@@ -73,8 +64,8 @@ int main()
 
                 glClearBufferfv(GL_COLOR, 0, red);
 
-                for (int j = 0; j < 10; j++)
-                        renderer.batch(grid[j], 10);
+                renderer.batch(grid.background(), grid.cells());
+
                 renderer.batch(test_data);
                 renderer.batch(test_data2);
                 renderer.batch(test_data1);
