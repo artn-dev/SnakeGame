@@ -21,25 +21,15 @@ int main()
         unsigned int frag = load_shader(GL_FRAGMENT_SHADER, "../res/grid_obj.frag");
         unsigned int geom = load_shader(GL_GEOMETRY_SHADER, "../res/grid_obj.geom");
 
-        unsigned int shader = glCreateProgram();
-        shader = link_program(shader, vert, frag, geom);
+        ShaderProgram shader;
+        shader.link(vert, frag, geom);
 
-        glUseProgram(shader);
+        glUseProgram(shader.id());
 
-        int loc = glGetUniformLocation(shader, "grid_rows");
-        if (loc == -1)
-                std::cerr << "Couldn't find grid_rows\n";
-        glUniform1i(loc, 10);
+        glUniform1i(shader.get_uniform("grid_rows"), 10);
+        glUniform1i(shader.get_uniform("grid_cols"), 10);
+        glUniform1f(shader.get_uniform("grid_cellsize"), 30.0f);
 
-        loc = glGetUniformLocation(shader, "grid_cols");
-        if (loc == -1)
-                std::cerr << "Couldn't find grid_cols\n";
-        glUniform1i(loc, 10);
-
-        loc = glGetUniformLocation(shader, "grid_cellsize");
-        if (loc == -1)
-                std::cerr << "Couldn't find grid_cellsize\n";
-        glUniform1f(loc, 30.0f);
 
         unsigned int vao;
         unsigned int vbo;
@@ -70,7 +60,7 @@ int main()
 
                 glClearBufferfv(GL_COLOR, 0, red);
 
-                glUseProgram(shader);
+                glUseProgram(shader.id());
                 glBindVertexArray(vao);
                 glDrawArrays(GL_POINTS, 0, 1);
 
@@ -83,7 +73,6 @@ int main()
         glDeleteShader(vert);
         glDeleteShader(frag);
         glDeleteShader(geom);
-        glDeleteProgram(shader);
 
         return 0;
 }
