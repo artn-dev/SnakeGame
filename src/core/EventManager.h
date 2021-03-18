@@ -14,23 +14,13 @@ private:
         std::vector<iObserver<int, int>*> subscribed;
         std::map<int, bool> keys_;
 
-        EventManager() = default;
-        virtual ~EventManager() = default;
-
-        static EventManager *instance_;
-
 public:
+        virtual ~EventManager() = default;
+	
         virtual void notify(int key, int action);
         virtual void subscribe(iObserver<int, int>* observer);
         bool is_pressed(int key);
-        
-
-public:
-        static EventManager* instance();
-        static void cleanup();
-        static void key_callback(
-                GLFWwindow* window, int key, int scancode, int action, int mode
-        );
+        void key_callback(int key, int scancode, int action, int mode);
         
 };
 

@@ -24,7 +24,16 @@ int main()
         if (!window.init())
                 return -1;
 
-        glfwSetKeyCallback(window.data(), EventManager::key_callback);
+	EventManager events;
+
+	glfwSetWindowUserPointer(window.data(), static_cast<void*>(&events));
+        glfwSetKeyCallback(window.data(),
+			[](GLFWwindow* window, int keys, int scancode, int action, int mode)
+			{
+				auto events = static_cast<EventManager*>(glfwGetWindowUserPointer(window));
+				events->key_callback(keys, scancode, action, mode);
+			}
+	);
 
         Grid grid(10, 10, 30.0f);
 
@@ -68,7 +77,7 @@ int main()
         while (window.is_running()) {
                 glfwPollEvents();
 
-                if (EventManager::instance()->is_pressed(GLFW_KEY_ESCAPE))
+                if (events.is_pressed(GLFW_KEY_ESCAPE))
                         glfwSetWindowShouldClose(window.data(), true);
 
                 glClearBufferfv(GL_COLOR, 0, red);
@@ -87,8 +96,6 @@ int main()
         glDeleteShader(vert);
         glDeleteShader(frag);
         glDeleteShader(geom);
-
-        EventManager::cleanup();
 
         return 0;
 }

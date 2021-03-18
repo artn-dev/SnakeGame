@@ -1,9 +1,6 @@
 #include "EventManager.h"
 
 
-EventManager* EventManager::instance_ = nullptr;
-
-
 void EventManager::notify(int key, int action)
 {
         for (auto& observer : subscribed) {
@@ -25,30 +22,16 @@ bool EventManager::is_pressed(int key)
         }
 }
 
-EventManager* EventManager::instance()
+void EventManager::key_callback(int key, int scancode, int action, int mode)
 {
-        if (instance_ == nullptr)
-                instance_ = new EventManager();
-        return instance_;
-}
-
-void EventManager::cleanup()
-{
-        delete instance_;
-}
-
-void EventManager::key_callback(
-        GLFWwindow* window, int key, int scancode, int action, int mode
-)
-{
-        instance_->notify(key, action);
+        notify(key, action);
 
         switch (action) {
         case GLFW_PRESS:
-                instance_->keys_[key] = true;
+                keys_[key] = true;
                 break;
         case GLFW_RELEASE:
-                instance_->keys_[key] =  false;
+                keys_[key] =  false;
                 break;
         }
 }
