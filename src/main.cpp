@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Shaders.h"
 #include "QuadRenderer.h"
+#include "EventManager.h"
 #include "Grid.h"
 
 
@@ -19,6 +20,8 @@ int main()
 
         if (!window.init())
                 return -1;
+
+        glfwSetKeyCallback(window.data(), EventManager::key_callback);
 
         Grid grid(10, 10, 30.0f);
 
@@ -62,6 +65,9 @@ int main()
         while (window.is_running()) {
                 glfwPollEvents();
 
+                if (EventManager::instance()->is_pressed(GLFW_KEY_ESCAPE))
+                        glfwSetWindowShouldClose(window.data(), true);
+
                 glClearBufferfv(GL_COLOR, 0, red);
 
                 renderer.batch(grid.background(), grid.cells());
@@ -78,6 +84,8 @@ int main()
         glDeleteShader(vert);
         glDeleteShader(frag);
         glDeleteShader(geom);
+
+        EventManager::cleanup();
 
         return 0;
 }
