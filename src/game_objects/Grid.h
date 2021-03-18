@@ -2,7 +2,7 @@
 #define GRID_H
 
 #include <vector>
-#include "Quad.h"
+#include "graphics/Quad.h"
 
 
 class Grid {

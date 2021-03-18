@@ -1,11 +1,14 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Window.h"
-#include "Shaders.h"
-#include "QuadRenderer.h"
-#include "EventManager.h"
-#include "Grid.h"
+
+#include "core/Window.h"
+#include "core/EventManager.h"
+
+#include "graphics/shaders/shaders.h"
+#include "graphics/QuadRenderer.h"
+
+#include "game_objects/Grid.h"
 
 
 int main()

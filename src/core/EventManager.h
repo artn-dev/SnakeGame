@@ -4,8 +4,8 @@
 #include <vector>
 #include <map>
 #include <GLFW/glfw3.h>
-#include "Subject.h"
-#include "Observer.h"
+#include "game_objects/Subject.h"
+#include "game_objects/Observer.h"
 
 
 class EventManager : public iSubject<int, int> {

@@ -1,7 +1,7 @@
 #ifndef QUAD_RENDERER_H
 #define QUAD_RENDERER_H
 
-#include "ShaderProgram.h"
+#include "shaders/shaders.h"
 #include "Quad.h"
 
 
