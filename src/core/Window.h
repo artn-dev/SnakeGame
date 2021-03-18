@@ -4,6 +4,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "EventManager.h"
 
 
 struct WindowConfig {
@@ -18,13 +19,16 @@ struct WindowConfig {
 
 class Window {
 private:
-        const int   width;
-        const int   height;
-        const char *title;
-        GLFWwindow *wnd_obj;
-        WindowConfig  config;
+        WindowConfig  config_;
+        const int     width;
+        const int     height;
+        const char   *title_;
+        GLFWwindow   *wnd_obj;
+	EventManager *events_;
+
 public:
-        Window(const char *title, const WindowConfig& config);
+        Window(const char *title, const WindowConfig& config, EventManager *events);
+
         ~Window();
         
         bool init();

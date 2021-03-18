@@ -19,21 +19,13 @@ int main()
         wnd_config.resizable = false;
         wnd_config.version   = {4, 5};
 
-        Window window("Snake Game", wnd_config);
+	EventManager events;
+
+        Window window("Snake Game", wnd_config, &events);
 
         if (!window.init())
                 return -1;
 
-	EventManager events;
-
-	glfwSetWindowUserPointer(window.data(), static_cast<void*>(&events));
-        glfwSetKeyCallback(window.data(),
-			[](GLFWwindow* window, int keys, int scancode, int action, int mode)
-			{
-				auto events = static_cast<EventManager*>(glfwGetWindowUserPointer(window));
-				events->key_callback(keys, scancode, action, mode);
-			}
-	);
 
         Grid grid(10, 10, 30.0f);
 

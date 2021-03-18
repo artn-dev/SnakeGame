@@ -1,12 +1,13 @@
 #include "Window.h"
 
 
-Window::Window(const char *title, const WindowConfig& config)
+Window::Window(const char *title, const WindowConfig& config, EventManager *events)
         :
-        title(title),
+        title_(title),
         width(config.width),
         height(config.height),
-        config(config)
+        config_(config),
+	events_(events)
 {
 }
 
@@ -23,12 +24,12 @@ bool Window::init()
                 return -1;
         }
 
-        glfwWindowHint(GLFW_RESIZABLE, config.resizable ? GLFW_TRUE : GLFW_FALSE);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, config.version.major);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, config.version.minor);
+        glfwWindowHint(GLFW_RESIZABLE, config_.resizable ? GLFW_TRUE : GLFW_FALSE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, config_.version.major);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, config_.version.minor);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        wnd_obj = glfwCreateWindow(width, height, title, NULL, NULL);
+        wnd_obj = glfwCreateWindow(width, height, title_, NULL, NULL);
         if (wnd_obj == NULL) {
                 std::cout << "Failed to create window\n";
                 glfwTerminate();
@@ -47,6 +48,15 @@ bool Window::init()
         glViewport(0, 0, width, height);
 
         std::cout << "OpenGL v" << glGetString(GL_VERSION) << "\n";
+
+	glfwSetWindowUserPointer(wnd_obj, static_cast<void*>(this));
+	glfwSetKeyCallback(wnd_obj,
+			[](GLFWwindow *window, int key, int scancode, int action, int mode)
+			{
+				auto self = static_cast<Window*>(glfwGetWindowUserPointer(window));
+				self->events_->key_callback(key, scancode, action, mode);
+			}
+	);
 
         return true;
 }
