@@ -2,6 +2,7 @@
 #define QUAD_RENDERER_H
 
 #include "shaders/shaders.h"
+#include "Renderable.h"
 #include "Quad.h"
 
 
@@ -24,6 +25,7 @@ public:
         void render();
         void batch(Quad quad);
         void batch(Quad *quads, unsigned int count);
+        void batch(iRenderable *obj);
 
 private:
         void init_buffer_layout();

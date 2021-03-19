@@ -76,3 +76,12 @@ void QuadRenderer::init_buffer_layout()
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 }
+
+void QuadRenderer::batch(iRenderable *obj)
+{
+        Quad *render_data;
+        unsigned int amount;
+        obj->set_render_data(render_data, amount);
+
+        batch(render_data, amount);
+}
