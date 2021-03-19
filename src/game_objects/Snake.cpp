@@ -28,7 +28,6 @@ void Snake::move()
 void Snake::grow()
 {
         kuso::vec2 position = segments_[segments_.size() - 1].position;
-        position.x -= 1.0f;
         segments_.push_back({ position, SEGMENT_COLORS[segments_.size() % 4], 4.0f });
 }
 
