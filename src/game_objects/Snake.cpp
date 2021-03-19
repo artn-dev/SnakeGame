@@ -5,25 +5,35 @@
 
 Snake::Snake(kuso::vec2 position)
 {
-        segments.push_back({ position, { 0.0f, 0.0f, 1.0f, 1.0f }, 4.0f });
+        segments_.push_back({ position, { 0.0f, 0.0f, 1.0f, 1.0f }, 4.0f });
         direction = { 1.0f, 0.0f };
 }
 
 
 void Snake::move()
 {
-        for (size_t i = segments.size() - 1; i > 0; i--)
-                segments[i].position = segments[i - 1].position;
+        for (size_t i = segments_.size() - 1; i > 0; i--)
+                segments_[i].position = segments_[i - 1].position;
 
-        segments[0].position.x += direction.x;
-        segments[0].position.y += direction.y;
+        segments_[0].position.x += direction.x;
+        segments_[0].position.y += direction.y;
 }
 
 void Snake::grow()
 {
-        kuso::vec2 position = segments[segments.size() - 1].position;
+        kuso::vec2 position = segments_[segments_.size() - 1].position;
         position.x -= 1.0f;
-        segments.push_back({ position, { 0.0f, 0.0f, 1.0f, 1.0f }, 4.0f });
+        segments_.push_back({ position, { 0.0f, 0.0f, 1.0f, 1.0f }, 4.0f });
+}
+
+const Quad* Snake::segments() const
+{
+        return segments_.data();
+}
+
+size_t Snake::size() const
+{
+        return segments_.size();
 }
 
 void Snake::on_notify(int key, int action)
@@ -53,6 +63,6 @@ void Snake::on_notify(int key, int action)
 
 void Snake::set_render_data(Quad*& data, unsigned int& amount)
 {
-        data = segments.data();
-        amount = static_cast<unsigned int>(segments.size());
+        data = segments_.data();
+        amount = static_cast<unsigned int>(segments_.size());
 }

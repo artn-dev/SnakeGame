@@ -10,7 +10,7 @@
 class Snake : public iObserver<int, int>, public iRenderable {
 
 private:
-        std::vector<Quad> segments;
+        std::vector<Quad> segments_;
         kuso::vec2 direction;
 
 public:
@@ -19,6 +19,8 @@ public:
 
         void move();
         void grow();
+        const Quad* segments() const;
+        size_t size() const;
         void on_notify(int key, int action) override;
         void set_render_data(Quad*& data, unsigned int& amount) override;
 
