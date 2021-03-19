@@ -13,6 +13,8 @@ private:
         std::vector<Quad> segments_;
         kuso::vec2 direction;
 
+        static kuso::vec4 SEGMENT_COLORS[4];
+
 public:
         Snake(kuso::vec2 position);
         virtual ~Snake() = default;
