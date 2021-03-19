@@ -5,6 +5,8 @@
 #include "game_objects/Snake.h"
 
 
+class SpeedupSnakeCommand;
+
 class MoveSnakeCommand : public TimedCommand {
 
 private:
@@ -21,6 +23,12 @@ public:
         void execute() override
         {
                 receiver_->move();
+        }
+
+        void speedup()
+        {
+                if (period_ > 0.01f)
+                        period_ -= 0.01f;
         }
 
 };

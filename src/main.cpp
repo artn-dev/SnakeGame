@@ -7,6 +7,7 @@
 #include "core/Timer.hpp"
 #include "core/commands/TimedCommand.h"
 #include "core/commands/MoveSnakeCommand.h"
+#include "core/commands/SpeedUpSnakeCommand.h"
 
 #include "graphics/shaders/shaders.h"
 #include "graphics/QuadRenderer.h"
@@ -53,7 +54,9 @@ int main()
         Snake snek({ 5.0f, 5.0f });
         events.subscribe(&snek);
 
-        TimedCommand* move_snek = new MoveSnakeCommand(&snek, 0.3f);
+        std::vector<TimedCommand*> timed_events;
+        timed_events.push_back(new MoveSnakeCommand(&snek, 0.3f));
+        timed_events.push_back(new SpeedupSnakeCommand((MoveSnakeCommand*)timed_events[0], 1.0f));
 
         const float red[4] = { 255.0f, 0.0f, 0.0f, 255.0f };
 
@@ -63,7 +66,8 @@ int main()
 
                 float delta_time = clock.tick();
 
-                move_snek->execute(delta_time);
+                for (auto& event : timed_events)
+                        event->execute(delta_time);
 
                 if (events.is_pressed(GLFW_KEY_ESCAPE))
                         glfwSetWindowShouldClose(window.data(), true);
@@ -78,7 +82,8 @@ int main()
                 glfwSwapBuffers(window.data());
         }
 
-        delete move_snek;
+        for (auto& event : timed_events)
+                delete event;
 
         glDeleteShader(vert);
         glDeleteShader(frag);
