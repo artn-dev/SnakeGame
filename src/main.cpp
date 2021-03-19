@@ -14,6 +14,7 @@
 
 #include "game_objects/Grid.h"
 #include "game_objects/Snake.h"
+#include "game_objects/Apple.hpp"
 
 
 int main()
@@ -61,23 +62,26 @@ int main()
         timed_events.push_back(new MoveSnakeCommand(&snek, 0.3f));
         timed_events.push_back(new SpeedupSnakeCommand((MoveSnakeCommand*)timed_events[0], 1.0f));
 
+        Apple apple(&grid, { 8.0f, 1.0f });
+
         const float red[4] = { 255.0f, 0.0f, 0.0f, 255.0f };
 
 
         while (window.is_running()) {
                 glfwPollEvents();
 
+                if (events.is_pressed(GLFW_KEY_ESCAPE))
+                        glfwSetWindowShouldClose(window.data(), true);
+
                 float delta_time = clock.tick();
 
                 for (auto& event : timed_events)
                         event->execute(delta_time);
 
-                if (events.is_pressed(GLFW_KEY_ESCAPE))
-                        glfwSetWindowShouldClose(window.data(), true);
-
                 glClearBufferfv(GL_COLOR, 0, red);
 
                 renderer.batch(&grid);
+                renderer.batch(&apple);
                 renderer.batch(&snek);
 
                 renderer.render();
