@@ -3,9 +3,10 @@
 
 #include <vector>
 #include "graphics/Quad.h"
+#include "graphics/Renderable.h"
 
 
-class Grid {
+class Grid : public iRenderable {
 
 private:
         static kuso::vec4 BACKGROUND_COLORS[2];
@@ -13,7 +14,7 @@ private:
         int    rows_;
         int    cols_;
         float  cellsize_;
-        std::vector<Quad> background_;
+        std::vector<Quad> background;
 
 public:
         Grid(int rows, int cols, float cellsize);
@@ -23,7 +24,7 @@ public:
         int   cols() const;
         int   cells() const;
         int   cellsize() const;
-        Quad* background();
+        void  set_render_data(Quad*& data, unsigned int& amount) override;
 
 private:
         void init_background();

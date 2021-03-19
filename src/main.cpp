@@ -73,9 +73,8 @@ int main()
 
                 glClearBufferfv(GL_COLOR, 0, red);
 
-                renderer.batch(grid.background(), grid.cells());
-
-                renderer.batch(snek.segments.data(), snek.segments.size());
+                renderer.batch(&grid);
+                renderer.batch(&snek);
 
                 renderer.render();
 

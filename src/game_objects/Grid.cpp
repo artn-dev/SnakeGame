@@ -23,7 +23,7 @@ void Grid::init_background()
         for (int j = 0; j < rows_; j++) {
 
                 for (int i = 0; i < cols_; i++) {
-                        background_.push_back({
+                        background.push_back({
                                 { (float)i, (float)j },
                                 BACKGROUND_COLORS[(i + j) % 2],
                                 0.0
@@ -44,7 +44,7 @@ int Grid::cols() const
 
 int Grid::cells() const
 {
-        return background_.size();
+        return background.size();
 }
 
 int Grid::cellsize() const
@@ -52,7 +52,8 @@ int Grid::cellsize() const
         return cellsize_;
 }
 
-Quad* Grid::background()
+void  Grid::set_render_data(Quad*& data, unsigned int& amount)
 {
-        return background_.data();
+        data   = background.data();
+        amount = background.size();
 }
