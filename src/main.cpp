@@ -55,9 +55,6 @@ int main()
         Snake snek({ 5.0f, 5.0f });
         events.subscribe(&snek);
 
-        for (int i = 0; i < 4; i++)
-                snek.grow();
-
         std::vector<TimedCommand*> timed_events;
         timed_events.push_back(new MoveSnakeCommand(&snek, 0.3f));
         timed_events.push_back(new SpeedupSnakeCommand((MoveSnakeCommand*)timed_events[0], 1.0f));
@@ -77,6 +74,14 @@ int main()
 
                 for (auto& event : timed_events)
                         event->execute(delta_time);
+
+                if (apple.is_colliding(snek.segments(), snek.size())) {
+                        snek.grow();
+
+                        while (apple.is_colliding(snek.segments(), snek.size())) {
+                                apple.respawn();
+                        }
+                }
 
                 glClearBufferfv(GL_COLOR, 0, red);
 

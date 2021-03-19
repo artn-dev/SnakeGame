@@ -34,6 +34,16 @@ public:
                 data_.position.y = dis_y(gen);
         }
 
+        bool is_colliding(const Quad *quad, size_t count) const
+        {
+                for (size_t i = 0; i < count; i++)
+                        if (quad[i].position.x == data_.position.x &&
+                            quad[i].position.y == data_.position.y) {
+                                return true;
+                        }
+                return false;
+        }
+
         void set_render_data(Quad*& data, unsigned int& amount) override
         {
                 data   = &data_;
