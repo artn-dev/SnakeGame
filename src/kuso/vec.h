@@ -12,6 +12,8 @@ namespace kuso {
 }
 
 kuso::vec2 operator+(const kuso::vec2& vec1, const kuso::vec2& vec2);
+bool operator==(const kuso::vec2& vec1, const kuso::vec2& vec2);
+bool operator!=(const kuso::vec2& vec1, const kuso::vec2& vec2);
 
 
 #endif /* KUSO_MATH_H */
