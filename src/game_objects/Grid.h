@@ -18,7 +18,7 @@ private:
 
 public:
         Grid(int rows, int cols, float cellsize);
-        ~Grid();
+        virtual ~Grid();
 
         int   rows() const;
         int   cols() const;

@@ -6,6 +6,7 @@
 class iRenderable {
 
 public:
+        virtual ~iRenderable() = default;
         virtual void set_render_data(Quad*& data, unsigned int& amount) = 0;
 
 };
