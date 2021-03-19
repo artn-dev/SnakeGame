@@ -15,8 +15,7 @@ void Snake::move()
         for (size_t i = segments_.size() - 1; i > 0; i--)
                 segments_[i].position = segments_[i - 1].position;
 
-        segments_[0].position.x += direction.x;
-        segments_[0].position.y += direction.y;
+        segments_[0].position = segments_[0].position + direction;
 }
 
 void Snake::grow()
