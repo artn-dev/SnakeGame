@@ -10,7 +10,8 @@ file(GLOB_RECURSE SOURCE_FILES
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
+find_package(glfw3  REQUIRED)
+find_package(glm    REQUIRED)
 
 
 target_link_libraries(

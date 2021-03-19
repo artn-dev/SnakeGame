@@ -9,7 +9,7 @@
 class Grid : public iRenderable {
 
 private:
-        static kuso::vec4 BACKGROUND_COLORS[2];
+        static glm::vec4 BACKGROUND_COLORS[2];
 
         int    rows_;
         int    cols_;

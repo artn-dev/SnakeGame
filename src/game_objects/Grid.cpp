@@ -1,7 +1,7 @@
 #include "Grid.h"
 
 
-kuso::vec4 Grid::BACKGROUND_COLORS[2] = {
+glm::vec4 Grid::BACKGROUND_COLORS[2] = {
         { 0.0f, 0.0f, 0.0f, 1.0f },
         { 0.2f, 0.0f, 0.3f, 1.0f },
 };
@@ -21,7 +21,6 @@ Grid::~Grid()
 void Grid::init_background()
 {
         for (int j = 0; j < rows_; j++) {
-
                 for (int i = 0; i < cols_; i++) {
                         background.push_back({
                                 { (float)i, (float)j },

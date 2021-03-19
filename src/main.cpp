@@ -17,6 +17,8 @@
 #include "game_objects/Apple.hpp"
 
 
+bool is_bound(float num, float min, float max);
+
 int main()
 {
         WindowConfig wnd_config;
@@ -111,4 +113,9 @@ int main()
         glDeleteShader(geom);
 
         return 0;
+}
+
+bool is_bound(float num, float min, float max)
+{
+        return min <= num && num <= max;
 }
