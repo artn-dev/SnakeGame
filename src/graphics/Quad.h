@@ -1,12 +1,12 @@
 #ifndef QUAD_H
 #define QUAD_H
 
-#include "kuso/vec.h"
+#include <glm/glm.hpp>
 
 
 struct Quad {
-        kuso::vec2  position;
-        kuso::vec4  color;
+        glm::vec2  position;
+        glm::vec4  color;
         float padding;
 };
 

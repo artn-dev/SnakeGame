@@ -11,7 +11,7 @@
 class Apple : public iRenderable {
 
 private:
-        Quad data_;
+        Quad  data_;
         Grid *parent_;
         
         std::mt19937 gen;
@@ -19,7 +19,7 @@ private:
         std::uniform_int_distribution<int> dis_y;
 
 public:
-        Apple(Grid *grid, kuso::vec2 position)
+        Apple(Grid *grid, const glm::vec2& position)
                 : data_({ position, { 1.0f, 0.0f, 0.0f, 1.0f }, 4.0f }), parent_(grid)
         {
                 std::random_device rd;

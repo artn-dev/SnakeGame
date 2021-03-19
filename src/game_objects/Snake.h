@@ -11,12 +11,12 @@ class Snake : public iObserver<int, int>, public iRenderable {
 
 private:
         std::vector<Quad> segments_;
-        kuso::vec2 direction;
+        glm::vec2 direction;
 
-        static kuso::vec4 SEGMENT_COLORS[4];
+        static glm::vec4 SEGMENT_COLORS[4];
 
 public:
-        Snake(kuso::vec2 position);
+        Snake(const glm::vec2& position);
         virtual ~Snake() = default;
 
         void move();
