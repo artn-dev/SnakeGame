@@ -4,6 +4,7 @@
 
 #include "core/Window.h"
 #include "core/EventManager.h"
+#include "core/Timer.hpp"
 
 #include "graphics/shaders/shaders.h"
 #include "graphics/QuadRenderer.h"
@@ -25,6 +26,8 @@ int main()
 
         if (!window.init())
                 return -1;
+        
+        Timer clock;
 
 
         Grid grid(10, 10, 30.0f);
@@ -68,6 +71,8 @@ int main()
 
         while (window.is_running()) {
                 glfwPollEvents();
+
+                float delta_time = clock.tick();
 
                 if (events.is_pressed(GLFW_KEY_ESCAPE))
                         glfwSetWindowShouldClose(window.data(), true);
