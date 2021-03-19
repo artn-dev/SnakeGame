@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.16.3)
 project(SnakeGame VERSION 1.0.0)
 
-set(SOURCE_FILES 
-        "${PROJECT_SOURCE_DIR}/src/main.cpp"
+file(GLOB_RECURSE SOURCE_FILES 
+        "${PROJECT_SOURCE_DIR}/src/*.cpp"
+        "${PROJECT_SOURCE_DIR}/src/*/*.cpp"
         "${PROJECT_SOURCE_DIR}/ext/glad/src/glad.c"
 )
 
@@ -20,4 +21,5 @@ target_link_libraries(
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC "${PROJECT_SOURCE_DIR}/ext/glad/include"
+        PUBLIC "${PROJECT_SOURCE_DIR}/src/"
 )
