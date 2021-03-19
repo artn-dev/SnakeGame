@@ -5,6 +5,8 @@
 #include "core/Window.h"
 #include "core/EventManager.h"
 #include "core/Timer.hpp"
+#include "core/commands/TimedCommand.h"
+#include "core/commands/MoveSnakeCommand.h"
 
 #include "graphics/shaders/shaders.h"
 #include "graphics/QuadRenderer.h"
@@ -49,24 +51,19 @@ int main()
         QuadRenderer renderer(&shader);
 
         Snake snek({ 5.0f, 5.0f });
-
         events.subscribe(&snek);
+
+        TimedCommand* move_snek = new MoveSnakeCommand(&snek, 0.3f);
 
         const float red[4] = { 255.0f, 0.0f, 0.0f, 255.0f };
 
-        float counter = 0.0f;
 
         while (window.is_running()) {
                 glfwPollEvents();
 
                 float delta_time = clock.tick();
 
-                counter += delta_time;
-
-                if (counter >= 0.4f) {
-                        snek.move();
-                        counter = 0.0f;
-                }
+                move_snek->execute(delta_time);
 
                 if (events.is_pressed(GLFW_KEY_ESCAPE))
                         glfwSetWindowShouldClose(window.data(), true);
@@ -80,6 +77,8 @@ int main()
 
                 glfwSwapBuffers(window.data());
         }
+
+        delete move_snek;
 
         glDeleteShader(vert);
         glDeleteShader(frag);
