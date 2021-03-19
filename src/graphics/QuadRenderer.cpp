@@ -37,6 +37,9 @@ void QuadRenderer::batch(Quad quad)
 {
         render_data[queued] = quad;
         queued++;
+
+        if (queued >= MAX_QUAD_AMOUNT)
+                render();
 }
 
 void QuadRenderer::batch(Quad *quads, unsigned int count)
