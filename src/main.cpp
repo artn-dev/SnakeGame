@@ -10,6 +10,7 @@
 #include "graphics/QuadRenderer.h"
 
 #include "game_objects/Grid.h"
+#include "game_objects/Snake.h"
 
 
 int main()
@@ -47,32 +48,25 @@ int main()
 
         QuadRenderer renderer(&shader);
 
+        Snake snek({ 5.0f, 5.0f });
 
-        Quad test_data = {
-                { 2.0f, 2.0f },
-                { 0.0f, 0.0f, 1.0f, 0.0f },
-                5.0f
-        };
-
-        Quad test_data1 = {
-                { 1.0f, 4.0f },
-                { 0.0f, 1.0f, 0.0f, 1.0f },
-                5.0f
-        };
-
-        Quad test_data2 = {
-                { 1.0f, 0.0f },
-                { 0.0f, 0.0f, 1.0f, 1.0f },
-                3.0f
-        };
-
+        events.subscribe(&snek);
 
         const float red[4] = { 255.0f, 0.0f, 0.0f, 255.0f };
+
+        float counter = 0.0f;
 
         while (window.is_running()) {
                 glfwPollEvents();
 
                 float delta_time = clock.tick();
+
+                counter += delta_time;
+
+                if (counter >= 0.4f) {
+                        snek.move();
+                        counter = 0.0f;
+                }
 
                 if (events.is_pressed(GLFW_KEY_ESCAPE))
                         glfwSetWindowShouldClose(window.data(), true);
@@ -81,9 +75,7 @@ int main()
 
                 renderer.batch(grid.background(), grid.cells());
 
-                renderer.batch(test_data);
-                renderer.batch(test_data2);
-                renderer.batch(test_data1);
+                renderer.batch(snek.segments.data(), snek.segments.size());
 
                 renderer.render();
 
