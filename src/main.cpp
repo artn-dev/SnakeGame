@@ -20,8 +20,8 @@
 int main()
 {
         WindowConfig wnd_config;
-        wnd_config.height    = 300;
-        wnd_config.width     = 300;
+        wnd_config.height    = 600;
+        wnd_config.width     = 600;
         wnd_config.resizable = false;
         wnd_config.version   = {4, 5};
 
@@ -35,7 +35,7 @@ int main()
         Timer clock;
 
 
-        Grid grid(10, 10, 30.0f);
+        Grid grid(20, 20, 30.0f);
 
         unsigned int vert = load_shader(GL_VERTEX_SHADER,   "../res/grid_obj.vert");
         unsigned int frag = load_shader(GL_FRAGMENT_SHADER, "../res/grid_obj.frag");
@@ -57,7 +57,7 @@ int main()
 
         std::vector<TimedCommand*> timed_events;
         timed_events.push_back(new MoveSnakeCommand(&snek, 0.3f));
-        timed_events.push_back(new SpeedupSnakeCommand((MoveSnakeCommand*)timed_events[0], 1.0f));
+        timed_events.push_back(new SpeedupSnakeCommand((MoveSnakeCommand*)timed_events[0], 3.0f));
 
         Apple apple(&grid, { 8.0f, 1.0f });
 
