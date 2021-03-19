@@ -76,10 +76,8 @@ int main()
                         if (event)
                                 event->execute(delta_time);
 
-                if (snek.segments()[0].position.x < 0 ||
-                    snek.segments()[0].position.x >= grid.cols() ||
-                    snek.segments()[0].position.y < 0 ||
-                    snek.segments()[0].position.y >= grid.rows()
+                if (!is_bound(snek.segments()[0].position.x, 0, grid.cols() - 1) ||
+                    !is_bound(snek.segments()[0].position.y, 0, grid.rows() - 1)
                 ) {
                         delete timed_events[0];
                         timed_events[0] = nullptr;
