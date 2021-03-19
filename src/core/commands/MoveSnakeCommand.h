@@ -27,7 +27,7 @@ public:
 
         void speedup()
         {
-                if (period_ > 0.01f)
+                if (period_ > 0.1f)
                         period_ -= 0.01f;
         }
 
