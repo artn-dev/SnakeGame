@@ -73,7 +73,17 @@ int main()
                 float delta_time = clock.tick();
 
                 for (auto& event : timed_events)
-                        event->execute(delta_time);
+                        if (event)
+                                event->execute(delta_time);
+
+                if (snek.segments()[0].position.x < 0 ||
+                    snek.segments()[0].position.x >= grid.cols() ||
+                    snek.segments()[0].position.y < 0 ||
+                    snek.segments()[0].position.y >= grid.rows()
+                ) {
+                        delete timed_events[0];
+                        timed_events[0] = nullptr;
+                }
 
                 if (apple.is_colliding(snek.segments(), snek.size())) {
                         snek.grow();
@@ -95,7 +105,8 @@ int main()
         }
 
         for (auto& event : timed_events)
-                delete event;
+                if (event)
+                        delete event;
 
         glDeleteShader(vert);
         glDeleteShader(frag);
