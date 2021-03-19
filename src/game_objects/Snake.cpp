@@ -38,3 +38,9 @@ void Snake::on_notify(int key, int action)
                 break;
         }
 }
+
+void Snake::set_render_data(Quad*& data, unsigned int& amount)
+{
+        data = segments.data();
+        amount = static_cast<unsigned int>(segments.size());
+}

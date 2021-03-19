@@ -5,10 +5,11 @@
 #include <GLFW/glfw3.h>
 #include "graphics/Quad.h"
 #include "Observer.h"
+#include "graphics/Renderable.h"
 
-class Snake : public iObserver<int, int> {
+class Snake : public iObserver<int, int>, public iRenderable {
 
-public:
+private:
         std::vector<Quad> segments;
         kuso::vec2 direction;
 
@@ -18,6 +19,7 @@ public:
 
         void move();
         void on_notify(int key, int action) override;
+        void set_render_data(Quad*& data, unsigned int& amount) override;
 
 };
 
