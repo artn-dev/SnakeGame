@@ -18,6 +18,7 @@ public:
         virtual ~Snake() = default;
 
         void move();
+        void grow();
         void on_notify(int key, int action) override;
         void set_render_data(Quad*& data, unsigned int& amount) override;
 

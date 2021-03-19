@@ -1,5 +1,7 @@
 #include "Snake.h"
 
+#include <iostream>
+
 
 Snake::Snake(kuso::vec2 position)
 {
@@ -10,8 +12,18 @@ Snake::Snake(kuso::vec2 position)
 
 void Snake::move()
 {
+        for (size_t i = segments.size() - 1; i > 0; i--)
+                segments[i].position = segments[i - 1].position;
+
         segments[0].position.x += direction.x;
         segments[0].position.y += direction.y;
+}
+
+void Snake::grow()
+{
+        kuso::vec2 position = segments[segments.size() - 1].position;
+        position.x -= 1.0f;
+        segments.push_back({ position, { 0.0f, 0.0f, 1.0f, 1.0f }, 4.0f });
 }
 
 void Snake::on_notify(int key, int action)
