@@ -4,9 +4,11 @@
 
 # Snake Game
 
-![](.gh/screenshot.png)
+<p align="center">
+        <img src=".gh/screenshot.png" alt="Game screenshot" />
+</p>
 
-Um versão do Jogo da Cobra feita com OpenGL e C++. Esse foi um pequeno projeto de prática que também me deu a oportunidade de pesquisar e aprender sobre padrões de design, como "Observer" e "Command".
+Uma versão do Jogo da Cobra feita com OpenGL e C++. Esse foi um pequeno projeto de prática que também me deu a oportunidade de pesquisar e aprender sobre padrões de design, como "Observer" e "Command".
 
 ## Como usar
 
@@ -18,11 +20,12 @@ Um versão do Jogo da Cobra feita com OpenGL e C++. Esse foi um pequeno projeto 
    cmake ..
    make
    ```
+O arquivo compilado `SnakeGame` deve aparecer no diretório
 
 ## Feito Com
 
-- OpenGL - API multi-plataforma para renderizar gráficos 2D e 3D
 - C++ - Linguagem de programação de alto nível
+- OpenGL - API multi-plataforma para renderizar gráficos 2D e 3D
 - CMake - Ferramenta multi-plataforma para gerar arquivos de sistemas de build
 
 ## TODO
